@@ -41,7 +41,8 @@ app.get('/', function(req, res) {
       // response = await client.getMediaFeedByHashtag({ hashtag: $_hashtag })
       hashtag.getHashtag($_hashtag, req, res, client, hours);
     } else {
-      response = {hi: "use hashtag or profile params on url."}
+      response = {hi: "use hashtag or profile params on url."};
+      res.send(response);
     }
 
     // res.send(response)

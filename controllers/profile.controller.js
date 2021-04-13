@@ -32,7 +32,6 @@ profileCtrl.getProfile = async (profile, req, res, client, hours) => {
             response = _profile.data;
         }
     } else {
-        console.log('caso 1');
         await client.login().then(async () => {
             response = await client.getUserByUsername({ username: profile });
             if (response) {
