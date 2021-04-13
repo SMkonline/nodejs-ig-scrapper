@@ -1,8 +1,10 @@
-const express = require('express')
-const Instagram = require('instagram-web-api')
+const express = require('express');
+const Instagram = require('instagram-web-api');
+const FileCookieStore = require('tough-cookie-filestore2');
 
 const { connectDB } = require('./database');
 
+const cookieStore = new FileCookieStore('./cookies.json')
 const profile = require('./controllers/profile.controller');
 const hashtag = require('./controllers/hashtag.controller');
 
@@ -12,7 +14,7 @@ connectDB(process.env.DB_HOST, {user: process.env.DB_USER, pass: process.env.DB_
 
 const { username_instagram, password_instagram } = process.env;
 
-const client = new Instagram({ username: username_instagram, password: password_instagram })
+const client = new Instagram({ username: username_instagram, password: password_instagram, cookieStore })
 const hours = 43200;
 
 var app = express();
