@@ -4,12 +4,14 @@ const hashtagCtrl = {};
 hashtagCtrl.getHashtag = async (hashtag, req, res, client, hours) => {
     let _hashtag = await Hashtag.findOne({ hashtag: hashtag });
     let response;
+   
     if (_hashtag) {
+
         let now = Math.round(new Date().getTime() / 1000);
 
         if ((now - _hashtag.timestamp) > hours) {
 
-            await client.login().then(async () => {
+            // await client.login().then(async () => {
                 response = await client.getMediaFeedByHashtag({ hashtag: hashtag }).catch((error) => {
                     console.log(error);
                 });
@@ -21,15 +23,16 @@ hashtagCtrl.getHashtag = async (hashtag, req, res, client, hours) => {
                 }
     
                 await Hashtag.findByIdAndUpdate(_hashtag._id, {$set: hashtagToUpdate}, {new: true});
-            }).catch(err => {
-                return res.json(err.error);
-            });
+            // }).catch(err => {
+            //     return res.json(err.error);
+            // });
            
         } else {
             response = _hashtag.data;
         }
     } else {
-        await client.login().then(async () => {
+        
+        // await client.login().then(async () => {
             response = await client.getMediaFeedByHashtag({ hashtag: hashtag }).catch((error) => {
                 console.log(error);
             });
@@ -40,9 +43,9 @@ hashtagCtrl.getHashtag = async (hashtag, req, res, client, hours) => {
             });
     
             await hashtagToCreate.save();
-        }).catch(err => {
-            return res.json(err.error);
-        });
+        // }).catch(err => {
+        //     return res.json(err.error);
+        // });
        
     }
 

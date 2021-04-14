@@ -4,7 +4,9 @@ const Instagram = require('instagram-web-api')
 const profileCtrl = {};
 
 profileCtrl.getProfile = async (profile, req, res, client, hours) => {
+  
     let _profile = await Profile.findOne({ profile: profile });
+    // console.log(_profile);
     let response;
     if (_profile) {
         
@@ -12,7 +14,7 @@ profileCtrl.getProfile = async (profile, req, res, client, hours) => {
        
         if ((now - _profile.timestamp) > hours) {
 
-            await client.login().then(async () => {
+            // await client.login().then(async () => {
                 response = await client.getUserByUsername({ username: profile }).catch(err => console.log(err));
 
                 if (response) {
@@ -24,15 +26,15 @@ profileCtrl.getProfile = async (profile, req, res, client, hours) => {
     
                     await Profile.findByIdAndUpdate(_profile._id, {$set: profileToUpdate}, {new: true});
                 }
-            }).catch(err => {
-                return res.json(err.error);
-            });           
+            // }).catch(err => {
+            //     return res.json(err.error);
+            // });           
         
         } else {
             response = _profile.data;
         }
     } else {
-        await client.login().then(async () => {
+        // await client.login().then(async () => {
             response = await client.getUserByUsername({ username: profile });
             if (response) {
                 const profileToCreate = new Profile({
@@ -43,9 +45,9 @@ profileCtrl.getProfile = async (profile, req, res, client, hours) => {
             
                 await profileToCreate.save();
             }
-        }).catch(err => {
-            return res.json(err.error);
-        });
+        // }).catch(err => {
+        //     return res.json(err.error);
+        // });
        
     }
     if (response) {
